@@ -1,0 +1,17 @@
+INSTALL
+
+Install Anaconda3 (see https://conda.io/projects/conda/en/latest/user-guide/install/linux.html)
+and make sure that ~/anaconda3/bin/ is in your path.
+
+% unzip exPfact
+
+% cd python
+
+% python setup_calc_dpred.py build_ext --inplace
+
+TEST
+
+% cd testing
+
+read testing/README
+
