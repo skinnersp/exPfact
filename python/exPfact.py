@@ -48,7 +48,7 @@ from write import write_diff, \
     write_pfact
 
 
-def run(base_dir, dexp, assignments, pfact, random_steps, time_points, harmonic_term, output_file, tolerance, weights, pH, temperature, seq):
+def run(base_dir, dexp, assignments, pfact, random_steps, time_points, harmonic_term, output_file, tolerance, weights, pH, temperature, seq, res1, resn):
     """
 
     :param base_dir: base directory for all input files.
@@ -75,7 +75,7 @@ def run(base_dir, dexp, assignments, pfact, random_steps, time_points, harmonic_
         if ass[1] < min(pfactor_filter):
             pfactor_filter.add(ass[1])
 
-    kint, prolines = calculate_kint_for_sequence(assignment_set, seq, temperature, pH)
+    kint, prolines = calculate_kint_for_sequence(res1, resn, seq, temperature, pH)
 
     if not pfact:
         if random_steps:
@@ -138,6 +138,8 @@ def main(argv):
     parser.add_argument("--temp")
     parser.add_argument("--pH")
     parser.add_argument("--seq")
+    parser.add_argument("--res1")
+    parser.add_argument("--resn")
 
     if sys.argv[1].endswith('.json'):
         config = read_configuration(sys.argv[1])
@@ -167,6 +169,12 @@ def main(argv):
 
         if opts.seq:
             config['sequence'] = read_seq(opts.seq)
+
+        if opts.seq:
+            config['res1'] = int(opts.res1)
+        if opts.seq:
+            config['resn'] = int(opts.resn)
+
 
         # Optional arguments
 
@@ -224,7 +232,9 @@ def main(argv):
         config['weights'],
         config['pH'],
         config['temperature'],
-        config['sequence']
+        config['sequence'],
+        config['res1'],
+        config['resn']
         )
 
 

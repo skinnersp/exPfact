@@ -14,27 +14,17 @@ import numpy as np
 
 
 
-def calculate_kint_for_sequence(assignment_set, seq, temperature, pH):
-    print(assignment_set)
-    print(len(assignment_set))
-    print(seq,len(seq))
+def calculate_kint_for_sequence(first_residue, last_residue, seq, temperature, pH):
     prolines = []
-    first_assignment = min(assignment_set)
-    last_assignment = max(assignment_set)
-    print(first_assignment,last_assignment)
-    kint = np.zeros(max(assignment_set))
+    kint = np.zeros((last_residue))
+    kint.fill(-1)
     res1=""
     jj = 0
     for assignment in range(1, len(seq)+1):
         res=seq[jj]
-        print("*",jj,assignment,res,res1)
-        if assignment not in assignment_set:
-            kint[assignment-1] = -1
-        else:
-           if assignment - first_assignment == 0:
+        if not res1 == "":
+           if assignment - first_residue == 0:
                kint[assignment-1] = -1
-#           elif assignment == last_assignment + 1:
-#               break
            elif seq[jj] == "P":
                kint[assignment-1] = -1
                prolines.append(first_assignment + jj)
@@ -45,7 +35,7 @@ def calculate_kint_for_sequence(assignment_set, seq, temperature, pH):
         jj += 1
         res1=res
     print("Residue\tkint")
-    for residue, value in zip([x for x in range(first_assignment, last_assignment+1)], kint):
+    for residue, value in zip([x for x in range(1, last_residue+1)], kint):
         print("{}\t{}".format(residue, value))
 
     return kint, prolines
