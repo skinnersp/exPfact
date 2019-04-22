@@ -69,6 +69,8 @@ if opts.times:
     config['times'] = read_time_points(opts.times)
 if opts.seq:
     config['sequence'] = read_seq(opts.seq)
+    config['res1'] = 1
+    config['resn'] = len(read_seq(opts.seq))
 
 # Optional arguments
 if opts.out:
@@ -84,7 +86,7 @@ for ass in assignments:
     for x in range(int(ass[1]), int(ass[2]) + 1):
         assignment_set.add(x)
 
-kint, prolines = calculate_kint_for_sequence(assignment_set, config['sequence'], config['temperature'], config['pH'])
+kint, prolines = calculate_kint_for_sequence(config['res1'], config['resn'], config['sequence'], config['temperature'], config['pH'])
 
 dpred = calculate_dpred(pfact, config['times'], kint, assignments)
 

@@ -138,8 +138,6 @@ def main(argv):
     parser.add_argument("--temp")
     parser.add_argument("--pH")
     parser.add_argument("--seq")
-    parser.add_argument("--res1")
-    parser.add_argument("--resn")
 
     if sys.argv[1].endswith('.json'):
         config = read_configuration(sys.argv[1])
@@ -169,11 +167,8 @@ def main(argv):
 
         if opts.seq:
             config['sequence'] = read_seq(opts.seq)
-
-        if opts.seq:
-            config['res1'] = int(opts.res1)
-        if opts.seq:
-            config['resn'] = int(opts.resn)
+            config['res1'] = 1
+            config['resn'] = len(read_seq(opts.seq))
 
 
         # Optional arguments
