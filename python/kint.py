@@ -27,7 +27,7 @@ def calculate_kint_for_sequence(first_residue, last_residue, seq, temperature, p
                kint[assignment-1] = -1
            elif seq[jj] == "P":
                kint[assignment-1] = -1
-               prolines.append(first_assignment + jj)
+               prolines.append(first_residue + jj)
            else:
                kint[assignment-1] = calculate_kint_per_residue(res1,res,assignment,len(seq), temperature, pH)
         print("**",assignment,len(seq))
