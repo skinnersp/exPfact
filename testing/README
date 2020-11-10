@@ -4,7 +4,7 @@ Here we report inputs to reproduce the results for the test case reported in Ski
 Reference protection factors are in ref.pfact 
 Assignments for the sequence in test.seq are in test.list
 Generate reference deuterium uptake:
-% python ../python/pfact2dpred.py --ass test.list --pfact test.pfact --pH 7 --temp 300 --times test.times --out test
+% python ../python/pfact2dpred.py --ass test.list --pfact test.pfact --pH 7 --temp 300 --times test.times --seq test.seq --out test
 mv test.Dpred test.Dexp
 test.Dexp: experimental/reference deuterium uptake (0 <= D <=1)
 format: time(hours) D(peptide1) D(peptide2) .... D(peptideN)
