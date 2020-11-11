@@ -1,12 +1,18 @@
-#!/usr/bin/python
+"""
+Copyright (C) 2019-2020 Simon P. Skinner
 
-# This script calculates the intrinsic deuteration rates of each residue 
-# of a protein into D2O
-# The argument has to be the sequence of the protein in one letter code
-# The temperature (in Kelvin) and the pH can be changed
-# This script is based on the work of Bai and al. (1993) and the excel table proposed on the Englander group website. Notice that the parameters for E and D has been updated to take into account the work of Mori and al. (1997)
-# kint is in min-1
+This program is free software: you can redistribute it and/or modify
+it under the terms of version 2 of the GNU General Public License as published by
+the Free Software Foundation.
 
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+"""
 
 from math import *
 from constants import *
