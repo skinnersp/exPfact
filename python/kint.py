@@ -36,9 +36,9 @@ def calculate_kint_for_sequence(first_residue, last_residue, seq, temperature, p
                kint[assignment-1] = calculate_kint_per_residue(res1,res,assignment,len(seq), temperature, pH)
         jj += 1
         res1=res
-    print("Residue\tkint")
-    for residue, value in zip([x for x in range(1, last_residue+1)], kint):
-        print("{}\t{}".format(residue, value))
+    #print("Residue\tkint")
+    #for residue, value in zip([x for x in range(1, last_residue+1)], kint):
+    #    print("{}\t{}".format(residue, value))
 
     return kint, prolines
 
@@ -63,7 +63,6 @@ def calculate_kint_per_residue(residue1, residue2, num, length, temperature, pH)
     t2 = Fb * kb * get_OD(pH) * get_Ftb(temperature) * 3600
     t3 = Fb * kw * get_Ftw(temperature) * 3600
     
-    print(lamb1,rho1,lamb2,rho2,Fa,Fb,t1,t2,t3)
     kint = Fa * ka * get_D(pH)  * get_Fta(temperature) * 3600 +\
            Fb * kb * get_OD(pH) * get_Ftb(temperature) * 3600 +\
            Fb * kw * get_Ftw(temperature) * 3600

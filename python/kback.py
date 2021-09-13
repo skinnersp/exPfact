@@ -1,3 +1,9 @@
+"""
+Created on Fri 10 Sep 2021
+
+@author: Michele Stofella
+"""
+
 from math import *
 from constants_DH import *
 import numpy as np
@@ -54,11 +60,12 @@ def calculate_kback_for_sequence(first_residue, last_residue, seq, temperature, 
 
     return kback, prolines
 
-# This function calculate the kint of a residue
-# The first argument is the residue i and the second the residue i-1
-
 def calculate_kback_per_residue(residue1, residue2, num, length, temperature, pH):
-
+    """
+    This function calculates the kback of a residue. 
+    The first argument is the residue i and the second the residue i-1.
+    """
+    
     lamb1 = acid(residue2, temperature, pH, "lamb")
     rho1 = acid(residue1, temperature, pH, "rho")
     if num == 2: rho1 += rho_Nterm_acid
@@ -76,7 +83,6 @@ def calculate_kback_per_residue(residue1, residue2, num, length, temperature, pH
             Fb * kw * get_Ftw(temperature) * 3600
 
     return kback	
-
 
 def acid(residue, temperature, pH, value):
 

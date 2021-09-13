@@ -1,9 +1,16 @@
+"""
+Created on Fri 10 Sep 2021
+
+@author: Michele Stofella
+
+Parameters for a deuterated protein in H2O.
+Parameters measured by Bai et al. (1993)
+Paramters for D and E are based on the work of More and al. (1997)
+    and measured by and calculated in the functions acid and base
+"""
+
 from math import exp, log10
 
-# Parameters for a deuterated protein in H2O
-# Here are the parameters measured in Bai et al. (1993)
-# The parameters for D and E are based on the work of Mori and al. (1997)
-# and measured by and calculated in the functions acid and base
 para={
     "A": [0.00,   0.00,  0.00,  0.00],
     "C": [-0.54, -0.46,  0.62,  0.55],

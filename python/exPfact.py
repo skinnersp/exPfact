@@ -107,11 +107,11 @@ def run(base_dir, dexp, assignments, pfact, random_steps, time_points, harmonic_
             min_score = min(rand_output.keys())
             init_array = rand_output[min_score]
         else:
-            init_array = [1 if ii not in prolines or ii == 0 or ii+1 in pfactor_filter else -1 for ii in range(max(pfactor_filter))]
+            init_array = [1 if ii not in (prolines or ii == 0 or ii+1 in pfactor_filter) else -1 for ii in range(max(pfactor_filter))]
 
     else:
         init_array = read_pfact(pfact)
-
+    
     bounds = [(0.001, 20) if x >= 0 else (-1, -1) if x == -1 else (0, 0) for x in init_array]
 
     pfit = fit_pfact(init_array, dexp, time_points, assignments, harmonic_term, kint, bounds, tolerance, weights)

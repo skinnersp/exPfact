@@ -100,7 +100,7 @@ def fit_pfact(init_array, dexp, time_points, assignments, harmonic_term, kint, b
                              method='L-BFGS-B',
                              bounds=bounds,
                              tol=tol,
-                             options={'disp': True,
+                             options={'disp': False,
                                       'maxfun': 150000000,
                                       'maxiter': 1500000
                                       }
@@ -116,9 +116,9 @@ def harmonic_score(params, k):
     :return: score (float)
     """
     scores = []
-    for ii in range(len(params) - 1):
-        if params[ii] >= 0 and params[ii + 1] >= 0:
-            scores.append((k / 2) * (params[ii] - params[ii + 1]) ** 2)
+    for ii in range(1, len(params)-1):
+        if params[ii-1] >= 0 and params[ii] >= 0 and params[ii + 1] >= 0:
+            scores.append(k * (params[ii - 1] -2*params[ii] + params[ii + 1]) ** 2)
     return sum(scores)
 
 
