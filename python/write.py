@@ -53,5 +53,5 @@ def write_diff(outfile, dpred, dexp):
     fout = open(outfile + '.diff', 'w')
     costs = [np.sqrt(1 / len(pred) * np.sum((pred - exp) ** 2)) for pred, exp in zip(dpred, dexp)]
     for ii, cost in enumerate(costs):
-        fout.write('{} {}\n'.format(ii + 1, cost))
+        fout.write('{} {:e}\n'.format(ii + 1, cost))
     fout.close()

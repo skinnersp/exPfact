@@ -6,7 +6,7 @@ Created on Mon Sep 13 2021
 """
 
 from exPfact import run
-from read import read_assignments, read_seq, read_dexp, read_pfact
+from read import read_assignments, read_seq, read_dexp, read_pfact, read_configuration
 from calc_dpred import calculate_dpred
 from kint import calculate_kint_for_sequence
 import numpy as np
@@ -84,7 +84,6 @@ if __name__ == '__main__':
 
     parser.add_argument("--dexp")
     parser.add_argument("--ass")
-    parser.add_argument("--times")
     parser.add_argument("--temp")
     parser.add_argument("--pH")
     parser.add_argument("--seq")

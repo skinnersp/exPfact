@@ -22,11 +22,21 @@ Install the dependencies:
 
 ``` conda install -c anaconda cython ```
 
+``` conda install pandas ```
+
 Before running ExPfact, you also need to compile cython code:
 
 ``` cd python ```
 
 ``` python setup_calc_dpred.py build_ext --inplace ```
+
+The clustering algorithm is implemented in the R package [mclust](). To install R:
+
+``` conda install -c conda-forge r-base ```
+
+Then, to install the package, run interactively R from the command line (just digit `R`), then:
+
+``` install.packages("mclust") ```
 
 ## Getting started
 

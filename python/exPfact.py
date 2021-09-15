@@ -107,7 +107,8 @@ def run(base_dir, dexp, assignments, pfact, random_steps, time_points, harmonic_
             min_score = min(rand_output.keys())
             init_array = rand_output[min_score]
         else:
-            init_array = [1 if ii not in (prolines or ii == 0 or ii+1 in pfactor_filter) else -1 for ii in range(max(pfactor_filter))]
+            print(pfactor_filter)
+            init_array = [1 if ii not in prolines or ii == 0 or ii+1 in pfactor_filter else -1 for ii in range(max(pfactor_filter))]
 
     else:
         init_array = read_pfact(pfact)
@@ -152,6 +153,7 @@ def main(argv):
     parser.add_argument("--temp")
     parser.add_argument("--pH")
     parser.add_argument("--seq")
+    parser.add_argument("--rep")
 
     if sys.argv[1].endswith('.json'):
         config = read_configuration(sys.argv[1])
@@ -183,7 +185,6 @@ def main(argv):
             config['sequence'] = read_seq(opts.seq)
             config['res1'] = 1
             config['resn'] = len(read_seq(opts.seq))
-
 
         # Optional arguments
 
@@ -224,27 +225,31 @@ def main(argv):
         else:
             config['weights'] = None
 
+        if opts.rep:
+            Nrep = int(opts.rep)
+        else:
+            Nrep = 1
 
     assignments = read_assignments(config['assignments'])
 
-
-    run(
-        config['base'],
-        config['dexp'],
-        assignments,
-        config['pfact'],
-        config['random_search_steps'],
-        config['times'],
-        config['harmonic_factor'],
-        config['output'],
-        config['tolerance'],
-        config['weights'],
-        config['pH'],
-        config['temperature'],
-        config['sequence'],
-        config['res1'],
-        config['resn']
-        )
+    for i in range(Nrep):
+        run(
+            config['base'],
+            config['dexp'],
+            assignments,
+            config['pfact'],
+            config['random_search_steps'],
+            config['times'],
+            config['harmonic_factor'],
+            config['output']+str(i),
+            config['tolerance'],
+            config['weights'],
+            config['pH'],
+            config['temperature'],
+            config['sequence'],
+            config['res1'],
+            config['resn']
+            )
 
 
 if __name__ == "__main__":
