@@ -50,23 +50,15 @@ The sum of squared residuals should approach zero for all peptides in the file `
 
 ## Producing multiple solutions
 
-% test.sh
-produces 100 predictions of protection factors sets all reproducing exactly the reference deuterium uptake
-variability in the prediction for specific residues provides a measure of the underdetermination of the problem. Use different assignment sets to see how the overlap of assigned peptides affect the quality of the prediction.
+To generate multiple solutions, just add the parameter `--rep` to the previous command.
+To produce 100 predictions of protection factors, all with similar agreement with protection factors:
 
-input: 
+` python ../python/exPfact.py --temp 300 --pH 7.0 --dexp test.Dexp --ass test.list --weights test.weights --harm 0 --rand 10000 --seq test.seq --out out --rep 100`
 
-the output files are 
-out.pfact  
-format: residue_number lnP(predicted)
+Variability in the prediction for specific residues provides a measure of the underdetermination of the problem. 
+Use different assignment sets to see how the overlap of assigned peptides affect the quality of the prediction.
 
-out.Dpred 
-format: as test.Dexp with values consistent with predicted lnP
-
-out.diff
-format: peptide_id RMSD(Dpred-Dexp)
-In the directory utils are some scripts that perform the calculations in the paper and the analysis.
-Scripts are in bash, python, R and a bit of a mess. Simon and/or Gael will make them nice enough to put in the repository in due course. If anything is missing or confusing, please let us know: e.paci@leeds.ac.uk or s.p.skinner@leeds.ac.uk. We'd be happy to help.
+Similarly to the case of a single solution, three outputs are generated, namely `out[i].pfact`, `out[i].Dpred` and `out[i].diff`, where `[i]` identifies the i-th solution.
 
 ## Descriptive statistics
 
