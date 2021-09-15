@@ -62,10 +62,27 @@ Similarly to the case of a single solution, three outputs are generated, namely 
 
 ## Descriptive statistics
 
-% ../sh/analyse.sh test test.seq 50
-analyses the results (i.e., the files out[1-100].pfact, calculating averages/median/etc of the 50% with lowest score)
+To analyse the outcomes of multiple minimization calculating average, median, minimum/maximum values, digit: 
 
-Produces mean, median, interquartile range (minmax) etc. Extension cpfact includes only residues for which a pfactor is defined. I also creates a directory singlep with distribution of protection factors for individual residues.
+` python ../python/descriptive.py --res out --top 50 `
+
+Parameters:
+* `--res`: prefix of resutls to be analysed (equivalent to the paramter `--out` in the command to generate multiple solutions). E.g.: if outputs out1.pfact, ..., out100.pfact have been previously generated, use `--res out`
+* `--top`: percentage of best solutions to be generated (default 50%)
+
+Outputs:
+* `average.pfact`: contains the average protection factor per residue with associated standard deviation. Format: residue average(lnP) std
+* `median.pfact`: contains the median protection factor per residue. Format: residue median(lnP)
+* `minmax.pfact`: contains the minimum and maximum value assumed by the protection factor. Format: residue min(lnP) max(lnP)
+* `all.sp`: contains all the protection factors estimated by the best `--top` runs. Format:
+
+|       | Residue 1 | Residue 2 | ... | Residue N |
+| ----- | --------- | --------- | --- | --------- |
+| Run 1 | lnP(1,1)  | lnP(1,2)  | ... | lnP(1,N)  |
+| Run 2 | lnP(2,1)  | lnP(2,2)  | ... | lnP(2,N)  |
+|  ...  |    ...    |    ...    | ... |    ...    |
+
+Each column in the file `all.sp` can be used to build the histogram of protection factors predicted for a specific residue. 
 
 ## Clustering algorithm
 
