@@ -1,6 +1,10 @@
 library(mclust)
-data<-read.table("singlep/all.sp")
-fit<-Mclust(data[,XXX:YYY],G=1:99,modelNames="EII")
+data<-read.table("all.sp")
+args <- commandArgs(trailingOnly = TRUE)
+XXX <- args[1]
+YYY <- args[2]
+
+fit<-Mclust(data[,XXX:YYY],G=1:99,modelNames="VVV")
 write.table(file="tmp.mod",fit$parameters$mean)
 write.table(file="tmp.pro",fit$parameters$pro)
 dat<-numeric()

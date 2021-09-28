@@ -26,7 +26,7 @@ def get_rate_res(double [:] kint, double[:] P):
         if kint[i] == -1:
             kint_out[i] += -1
         else:
-            kint_out[i] += 60 * kint[i] / exp(P[i])
+            kint_out[i] += kint[i] / exp(P[i])
 
     return kint_out
 

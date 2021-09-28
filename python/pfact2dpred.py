@@ -44,7 +44,7 @@ from read import read_assignments, \
         read_seq,	 \
         read_time_points
 
-from write import write_dpred
+from write import write_dpred, write_combined_replicates
 
 import numpy as np
 
@@ -59,6 +59,9 @@ parser.add_argument("--temp")
 parser.add_argument("--pH")
 parser.add_argument("--seq")
 parser.add_argument("--out")
+
+parser.add_argument("--nrep")
+parser.add_argument("--eps")
 
 config = {}
 
@@ -92,6 +95,16 @@ if opts.out:
 else:
     config['output'] = None
 
+if opts.nrep:
+    nrep = int(opts.nrep)
+else:
+    nrep = 1
+    
+if opts.eps:
+    eps = float(opts.eps)
+else:
+    eps = 0.
+    
 pfact = config['pfact']
 assignments = read_assignments(config['assignments'])
 
@@ -102,6 +115,12 @@ for ass in assignments:
 
 kint, prolines = calculate_kint_for_sequence(config['res1'], config['resn'], config['sequence'], config['temperature'], config['pH'])
 
-dpred = calculate_dpred(pfact, config['times'], kint, assignments)
-
-write_dpred(config['output'], dpred, config['times'])
+outfiles = []
+for i in range(1,nrep+1):
+    dpred = calculate_dpred(pfact, config['times'], kint, assignments)
+    outfile = config['output']+str(i)
+    write_dpred(outfile, dpred, config['times'], eps)
+    outfiles.append(outfile+".Dpred")
+    
+if nrep > 1:
+    write_combined_replicates(outfiles, out=config['output'])

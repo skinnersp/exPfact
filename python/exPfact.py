@@ -107,7 +107,6 @@ def run(base_dir, dexp, assignments, pfact, random_steps, time_points, harmonic_
             min_score = min(rand_output.keys())
             init_array = rand_output[min_score]
         else:
-            print(pfactor_filter)
             init_array = [1 if ii not in prolines or ii == 0 or ii+1 in pfactor_filter else -1 for ii in range(max(pfactor_filter))]
 
     else:

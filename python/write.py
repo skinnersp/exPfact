@@ -29,7 +29,7 @@ def write_pfact(params, fout_name):
     fout.close()
 
 
-def write_dpred(output_file, dpred, times, suffix=".Dpred"):
+def write_dpred(output_file, dpred, times, eps=0, suffix=".Dpred"):
     """
     Writes Dpred values to file.
     :param output_file: output file name
@@ -39,6 +39,14 @@ def write_dpred(output_file, dpred, times, suffix=".Dpred"):
     :return:
     """
     output_array = np.insert(dpred, [0], times, axis=0)
+    if eps > 0:
+        for i in range(1,len(output_array)):
+            for j in range(len(output_array[i])):
+                output_array[i][j] += np.random.normal(scale=eps)
+                if output_array[i][j] > 1:
+                    output_array[i][j] = 1
+                elif output_array[i][j] < 0:
+                    output_array[i][j] = 0
     np.savetxt(output_file + suffix, output_array.T, fmt='%.7g')
 
 
@@ -55,3 +63,29 @@ def write_diff(outfile, dpred, dexp):
     for ii, cost in enumerate(costs):
         fout.write('{} {:e}\n'.format(ii + 1, cost))
     fout.close()
+    
+def write_combined_replicates(files, out):
+    """ 
+    Writes out .Dpred file where deuteration is mean of multiple replicates
+    :param files: list of .Dpred files to be combined
+    :param out:   name of output .Dpred file
+    :return:
+    """
+    list_arrays = []; weights = []
+    for file in files:
+        list_arrays.append(np.loadtxt(file))
+        weights.append(np.loadtxt(file).T[1:])
+    comb = np.mean(np.array(list_arrays), axis=0)
+    
+    all_w = []
+    for i in range(len(weights[0])):
+        for j in range(len(weights[0][i])):
+            all_w.append([weights[k][i][j] for k in range(len(weights))])
+    stds = [np.std(all_w[i]) for i in range(len(all_w))]
+    pstd = np.sqrt(np.sum([std**2 for std in stds])/len(stds))
+
+    print("  Pooled std: "+str(round(pstd,5)))
+
+    np.savetxt(out+'.Dpred', comb, fmt='%.7g')
+
+
