@@ -86,11 +86,19 @@ Each column in the file `all.sp` can be used to build the histogram of protectio
 
 ## Clustering algorithm
 
-% ../sh/do_multi.sh test
-performs the multivariate analysis of the results; in the directory singlep_contig there will be files n-m.mclust that have mean and standard deviation for each of the contiguous fragments (i.e., not interrupted by gaps) going from residue n to m.
+The clustering algorithm is applied to the results in the file `all.sp` previously generated. 
 
-do_multi.sh uses R; you need to install a specific library by running first R interactively and 
-> install.packages("mclust")
+The clustering algorithm is based on Gaussian mixture models. 
+Regions covered by contiguous overlapping peptides are considered one at a time. 
+The histograms of the protection factors of every residue in this region are combined into a multi-dimensional probability distribution. 
+The probability distribution is fitted with a mixture of gaussians with number of components varying from 1 to 99. 
+The final number of components is decided based on the Bayesian Information Criterion (BIC). 
+
+To run the clustering algorithm: 
+
+``` python ../python/clustering.py --ass test.ass ```
+
+**Note**: if not done previously, run R interactively and install the mclust package: `install.packages("mclust")`
 
 ## Predicting the shape of the isotopic envelope
 
