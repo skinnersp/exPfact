@@ -54,9 +54,9 @@ def calculate_kback_for_sequence(first_residue, last_residue, seq, temperature, 
                kback[assignment-1] = calculate_kback_per_residue(res1,res,assignment,len(seq), temperature, pH)
         jj += 1
         res1=res
-    print("Residue\tkback")
-    for residue, value in zip([x for x in range(1, last_residue+1)], kback):
-        print("{}\t{}".format(residue, value))
+    #print("Residue\tkback")
+    #for residue, value in zip([x for x in range(1, last_residue+1)], kback):
+    #    print("{}\t{}".format(residue, value))
 
     return kback, prolines
 
