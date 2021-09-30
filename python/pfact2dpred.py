@@ -117,8 +117,12 @@ kint, prolines = calculate_kint_for_sequence(config['res1'], config['resn'], con
 
 outfiles = []
 for i in range(1,nrep+1):
+    if nrep > 1:
+        outfile = config['output']+str(i)
+    else:
+        outfile = config['output']
+
     dpred = calculate_dpred(pfact, config['times'], kint, assignments)
-    outfile = config['output']+str(i)
     write_dpred(outfile, dpred, config['times'], eps)
     outfiles.append(outfile+".Dpred")
     

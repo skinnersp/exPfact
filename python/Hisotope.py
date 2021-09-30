@@ -46,3 +46,22 @@ def fully_protonated_envelope(sequence, z):
     print("Fully protonated envelope saved in file "+sequence+".txt!")
     
     return isenv
+
+if __name__ == '__main__':
+    
+    import argparse
+    
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("--seq")
+    parser.add_argument("--z")
+
+    opts = parser.parse_args()
+
+    if opts.seq:
+        sequence = opts.seq
+    
+    if opts.z:
+        z = int(opts.z)
+    
+    fully_protonated_envelope(sequence, z)

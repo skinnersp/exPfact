@@ -22,12 +22,11 @@ def select_top_solutions(out_file, X):
     np.savetxt('diff.list', sorted_files.values, fmt='%s %5.10f')
     
     p = []
-    for i in sorted_files.loc[:int(sorted_files.shape[0]*X/100)]:
+    for i in range(int(sorted_files.shape[0]*X/100)):
         file = sorted_files[0][i]
         p.append(list(read_pfact(file.replace('.diff','.pfact'))))
     
     with open("all.sp","w+") as f:
-        p = p
         for i in range(len(p)):
             for j in range(len(p[i])):
                 if j == len(p[i])-1:

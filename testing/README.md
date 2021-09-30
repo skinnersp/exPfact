@@ -102,12 +102,19 @@ To run the clustering algorithm:
 
 ## Predicting the shape of the isotopic envelope
 
-% ../sh/iso.sh
-file.pfact: calculates the isotopic envelope for a given fragment using the protection factors in file.pfact
-in the example peptide 2 is used. the isotopic envelope of the undeuterated sequence should be obtained from, e.g., 
-http://prospector.ucsf.edu/prospector/cgi-bin/msform.cgi?form=msisotope
-need also to compile iso.f
-% cd fortran ; gfortran iso.f -o iso
+The shape of the isotopic envelope of a peptide can be predicted from a set of protection factors if a multinomial probability distribution is convoluted with the fully protonated isotopic envelope.
+
+The fully protonated isotopic envelope can be calculated as the convolution of the monoisotopic mass of the peptides with the natural abundance of elements. Given the sequence and the charge state of the peptide, the protonated envelope can be calculated using the `pyopenms` library:
+
+``` python ../python/Hisotope.py --seq <sequence> --z <charge state> ```
+
+The script generates a file `<sequence>.txt` containing the fully protonated envelope of a peptide with sequence `<sequence>` and charge state `<charge state>`. Alternatively, the same envelope can be obtained using online tools like [MS-Isotope](http://prospector.ucsf.edu/prospector/cgi-bin/msform.cgi?form=msisotope).
+
+To predict the shape of the isotopic envelope at given exchange times, 
+
+``` python ../python/isenv.py --mode p --ass test.ass --seq test.seq --T_label 300 --pH_label 7 --pfact test.pfact --times test.times --pep 2 --z 1 --prefix iso ```
+
+The mode `p` stands for "predict" and only performs a prediction of the isotopic envelope (no comparison with experimental data). The isotopic envelope is predicted for peptide with index `--pep` from the assignment file `--ass`. The sequence of the protein (`--seq`), the temperature and pH of the label buffer (`--T_label`,`--pH_label`) are required to calculate intrinsic exchange rates; a pattern of protection factors (`--pfact`) is required. The isotopic envelope is predicted for every time contained in the file specified in `--times` for charge state `--z`. The results are saved in a folder named `--prefix`.
 
 ## Adding a penalization term to the cost function
 

@@ -232,6 +232,12 @@ def main(argv):
     assignments = read_assignments(config['assignments'])
 
     for i in range(Nrep):
+        
+        if Nrep > 1:
+            outfile = config['output']+str(i)
+        else:
+            outfile = config['output']
+        
         run(
             config['base'],
             config['dexp'],
@@ -240,7 +246,7 @@ def main(argv):
             config['random_search_steps'],
             config['times'],
             config['harmonic_factor'],
-            config['output']+str(i),
+            outfile,
             config['tolerance'],
             config['weights'],
             config['pH'],

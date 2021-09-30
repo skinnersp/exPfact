@@ -7,7 +7,6 @@ Created on Tue 28 Sep 2021
 import pandas as pd
 import os
 import numpy as np
-import matplotlib.pyplot as plt
 import glob
 import re
 from scipy.stats import chisquare
@@ -133,8 +132,8 @@ def back_centered_isotopic_envelope(t,kint,lnP,fr0):
     return f
 
 def predict_isotopic_envelope(ass_file, seq_file, temperature, pH,
-                              lnP_file, pi0_file, times_file, 
-                              pep, charge_state, out_file, exchange):
+                              lnP_file, times_file, pep, charge_state, 
+                              exchange, out_file, pi0_file=''):
     
     seq = read_seq(seq_file)
     times = read_time_points(times_file)
@@ -153,28 +152,29 @@ def predict_isotopic_envelope(ass_file, seq_file, temperature, pH,
         kint = kint[start_res:end_res]
     
     lnP  = read_pfact(lnP_file)[start_res:end_res]
-    
     ''' Calculate fully protonated isotopic envelope '''
-    pi0  = fully_protonated_envelope(seq[start_res:end_res], z=charge_state)
-    mass = list(pi0.keys())
-    
     if exchange == 'f':
+        pi0  = fully_protonated_envelope(seq[start_res:end_res+1], z=charge_state)
+        mass = list(pi0.keys())
         fr0  = list(pi0.values())
-        while len(mass) != 2*len(kint):
+        while len(mass) <= 2*len(kint[start_res:end_res+1]):
             mass.append((mass[-1] + 1.00627*int(charge_state))/charge_state)
-            fr0.append(0)
+            fr0.append(0) 
+            print(mass,fr0)
     elif exchange == 'b':
-        u_fr0 = list(pi0.values())
-        fr0 = centered_isotopic_envelope(0, kint, lnP, u_fr0)         
+        pi0   = pd.read_csv(pi0_file,skiprows=1,header=None,delim_whitespace=True)
+        mass  = list(pi0[1])
+        u_fr0 = list(pi0[2])
+        fr0   = centered_isotopic_envelope(0, kint, lnP, u_fr0)  
 
     ''' Calculate isotopic envelopes at different times '''
     for i in range(len(times)):
-        
         if exchange == 'f':
             f1 = centered_isotopic_envelope(times[i], kint, lnP, fr0)
         elif exchange == 'b':
             f1 = back_centered_isotopic_envelope(times[i], kint, lnP, fr0)
             
+        f1 = [f1[j]/sum(f1)*100 for j in range(len(f1))]
         with open(out_file+'.'+str(i)+'.isot','w+') as f:
             f.write('# '+seq[start_res:end_res]+'\n')
             for j in range(len(f1)):
@@ -187,18 +187,44 @@ def predict_isotopic_envelope(ass_file, seq_file, temperature, pH,
                 else:
                     f.write('%5.2f\n' % last_col)
 
+def generate_back_exchange_time_points(start=-5, end=5, num=500):
+    with open('back.times','w+') as f:
+        a = np.logspace(start, end, num)
+        for i in range(0,len(a)):
+            f.write('%5.15f\n' % a[i])
+
+def sticks_from_exp_envelope(exp_env, corr_env, z):
     
+    mass = list(corr_env[1])
+    fr = np.zeros(len(mass))
+    for i in range(len(exp_env)):
+        for j in range(len(mass)):
+            if exp_env[0][i]*z>=mass[j]-0.5 and exp_env[0][i]*z<mass[j]+0.5:
+                fr[j] += exp_env[1][i]
+    fr = fr/sum(fr)*100
+
+    return mass, fr
+
+def compare_predictions(fr, prefix):
+
+    times    = read_time_points('back.times')
     
+    files = []
+    for file in glob.glob(prefix):
+        files.append(file)
+    sort_nicely(files)
+
+    scores = []
+    for i in range(len(files)):
+
+        back_env = pd.read_csv(files[i],header=None,sep='\t',skiprows=1)
+        
+        score = r2_score(fr,back_env[2])
+        scores.append(score)
+        
+    res = pd.DataFrame([files, times, scores]).transpose()
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    return res
     
     
     
