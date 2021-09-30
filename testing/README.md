@@ -100,6 +100,14 @@ To run the clustering algorithm:
 
 **Note**: if not done previously, run R interactively and install the mclust package: `install.packages("mclust")`
 
+Outputs: for an area covered by overlapping peptides starting at residue `i` and ending at residue `j`, the following output files are generated:
+
+* `i-j.mclust` contains the mean and variance of the protection factor of each residue for every component. The output file consists of three columns (`%residue %pfact %variance`). Components are separated by a line containing the symbol `&`.
+* `i-j.mod` contains the mean of the protection factor of each residue for every component. Every column is a pattern of protection factors, every row represents an amino acid. 
+* `i-j.var` contains the variances of the protection factor of each residue for every component (same format as `i-j.mod`).
+* `i-j.pro` contains the probability assigned to each component. The output consists of two columns: the first is the component index, the second is the probability assigned to that specific component. Components are sorted from the most to the least probable. 
+* `i-j.bic` contains the BIC scores for number of components ranging 1 to 99.
+
 ## Predicting the shape of the isotopic envelope
 
 The shape of the isotopic envelope of a peptide can be predicted from a set of protection factors if a multinomial probability distribution is convoluted with the fully protonated isotopic envelope.
