@@ -24,6 +24,10 @@ Install the dependencies:
 
 ``` conda install pandas ```
 
+``` pip install pyopenms ```
+
+``` conda install -c conda-forge scikit-learn ```
+
 Before running ExPfact, you also need to compile cython code:
 
 ``` cd python ```
