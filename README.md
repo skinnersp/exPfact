@@ -8,15 +8,15 @@ If you use ExPfact in your work, please cite [Skinner et al., 'Estimating constr
 
 Install [Anaconda3](https://conda.io/projects/conda/en/latest/user-guide/install/linux.html).
 
-Create a new environment using python version 3.6.9. Open the anaconda prompt and type:
+Create a new environment using python version 3.6. Open the anaconda prompt and type:
 
-``` conda --name python369 python=3.6.9 ``` 
+``` conda --name python36 python=3.6 ``` 
 
 ```  conda activate python369 ```
 
-Install the dependencies: 
+Install the dependencies (it is **crucial** to install the correct versions as shown below): 
 
-``` conda install numpy ```
+``` conda install numpy=1.16.1 ```
 
 ``` conda install -c anaconda scipy=1.0.1 ```
 
