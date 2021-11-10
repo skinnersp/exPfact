@@ -14,7 +14,7 @@ import os
 import argparse
 import sys 
 
-lambdas = np.logspace(-15,1,20)
+lambdas = np.logspace(-15,-1,20)
 
 def L1OUT_dataset(dexp, time_points, k):
     """
@@ -46,7 +46,7 @@ def L1OUT_crossval(dexp, time_points, ass, lam, pH, temp, seq, res1, resn):
         
         run(base_dir=os.getcwd(), dexp=dexp_train, assignments=ass, pfact=None, 
             random_steps=None, time_points=times_train, harmonic_term=lam, 
-            output_file=out_file, tolerance=None, weights=None, 
+            output_file=out_file, tolerance=1e-15, weights=None, 
             pH=pH, temperature=temp, seq=seq, res1=res1, resn=resn)
         
         pfact = read_pfact(out_file+'.pfact')

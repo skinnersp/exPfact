@@ -112,7 +112,7 @@ def run(base_dir, dexp, assignments, pfact, random_steps, time_points, harmonic_
     else:
         init_array = read_pfact(pfact)
     
-    bounds = [(0.001, 20) if x >= 0 else (-1, -1) if x == -1 else (0, 0) for x in init_array]
+    bounds = [(0.00001, 20) if x >= 0 else (-1, -1) if x == -1 else (0, 0) for x in init_array]
 
     pfit = fit_pfact(init_array, dexp, time_points, assignments, harmonic_term, kint, bounds, tolerance, weights)
 
@@ -124,7 +124,7 @@ def run(base_dir, dexp, assignments, pfact, random_steps, time_points, harmonic_
     write_diff(output_file, dpred, dexp)
 
     final_score = cost_function(pfit.x, dexp, time_points, assignments, harmonic_term, kint, weights)
-    print('Final value of cost function: {}'.format(final_score))
+    print('Final value of cost function w   harmonic term: {}'.format(final_score))
     final_score = cost_function(pfit.x, dexp, time_points, assignments, 0.0, kint, weights)
     print('Final value of cost function w/o harmonic term: {}'.format(final_score))
 
