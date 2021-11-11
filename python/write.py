@@ -59,7 +59,7 @@ def write_diff(outfile, dpred, dexp):
     :return:
     """
     fout = open(outfile + '.diff', 'w')
-    costs = [np.sqrt(1 / len(pred) * np.sum((pred - exp) ** 2)) for pred, exp in zip(dpred, dexp)]
+    costs = [1 / len(pred) * np.sum((pred - exp)**2) for pred, exp in zip(dpred, dexp)]
     for ii, cost in enumerate(costs):
         fout.write('{} {:e}\n'.format(ii + 1, cost))
     fout.close()

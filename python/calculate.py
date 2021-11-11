@@ -26,7 +26,7 @@ def calculate_rms(dpred, dexp, nj, weights=None):
     Calculates the normalised rms between dpred and dexp
     :param dpred: numpy array containing the dpred values.
     :param dexp: numpy array containing the dexp values.
-    :param nj: number of residues in the protein.
+    :param nj: number of peptides.
     :return: rms (float)
     """
     if weights is not None:
