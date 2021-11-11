@@ -10,9 +10,9 @@ Install [Anaconda3](https://conda.io/projects/conda/en/latest/user-guide/install
 
 Create a new environment using python version 3.6. Open the anaconda prompt and type:
 
-``` conda --name python36 python=3.6 ``` 
+``` conda create --name python36 python=3.6 ``` 
 
-```  conda activate python369 ```
+```  conda activate python36 ```
 
 Install the dependencies (it is **crucial** to install the correct versions as shown below): 
 
