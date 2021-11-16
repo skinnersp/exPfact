@@ -14,7 +14,7 @@ import os
 import argparse
 import sys 
 
-lambdas = np.logspace(-15,-1,20)
+lambdas = np.logspace(-15,-1,15,endpoint=True)
 
 def L1OUT_dataset(dexp, time_points, k):
     """
@@ -46,28 +46,28 @@ def L1OUT_crossval(dexp, time_points, ass, lam, pH, temp, seq, res1, resn):
         
         run(base_dir=os.getcwd(), dexp=dexp_train, assignments=ass, pfact=None, 
             random_steps=None, time_points=times_train, harmonic_term=lam, 
-            output_file=out_file, tolerance=1e-15, weights=None, 
+            output_file=out_file, tolerance=1e-10, weights=None, 
             pH=pH, temperature=temp, seq=seq, res1=res1, resn=resn)
         
         pfact = read_pfact(out_file+'.pfact')
         dpred_test = calculate_dpred(pfact,times_test,kint,ass)
-        cost_test = [np.sqrt(1 / len(pred) * np.sum((pred - exp) ** 2)) for pred, exp in zip(dpred_test, dexp_test)]
+        cost_test = [1 / len(pred) * np.sum((pred - exp) ** 2) for pred, exp in zip(dpred_test, dexp_test)]
         
-        CVtrain += sum(np.loadtxt(out_file+'.diff'))[1]
-        CVtest  += sum(cost_test)
+        CVtrain += sum(np.loadtxt(out_file+'.diff'))[1] # summed over peptides 
+        CVtest  += sum(cost_test) # sum over peptides
         
         os.remove(out_file+".Dpred") 
         os.remove(out_file+".diff") 
         os.remove(out_file+".pfact") 
-    return CVtrain, CVtest
+    return CVtrain/len(time_points), CVtest/len(time_points)
 
 def cross_validate(dexp, time_points, ass, lambdas, pH, temp, seq, res1, resn):
     """
     This function applies leave-one-out cross-validation to a dataset at varying values of the penalty term lambda. 
-    The values for lambda are fixed (line 19) and cover 10 orders of magnitude. 
+    The values for lambda are fixed (line XX) and cover 10 orders of magnitude. 
     For each value of lambda, the function L1OUT_crossval is applied.
     """
-    fout = open('CV.res','w+')
+    fout = open('CVtest2.res','w+')
     for i in range(len(lambdas)):
         print("**********************************************************\n")
         print("      EXPLORING LAMBDA LANDSCAPE: lambda = "+"{:e}".format(lambdas[i]))
