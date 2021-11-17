@@ -88,6 +88,19 @@ The file `median.pfact` contains the median values of protection factors:
 
 ## Clustering algorithm
 
+The script for the clustering algorithm assumes that a file `all.sp` is present in the working directory.
+To launch the clustering algorithm:
+
+``` python ../python/clustering.py --ass moprp.ass ```
+
+This generates several outputs for every region covered by overlapping peptides (see folder `testing` for further details).
+
+**The results obtained giving the file `all.sp` provided here are stored in the folder `mclust`** (see image below).
+More clusters are identified for regions 5-9 and 27-30.
+At least one cluster is compatible with protection factors from NMR (see file `nmr.xlsx`) 
+
+![](images/Figure2.PNG)
+
 ## Isotopic envelopes
 
 ## Comparison with NMR data
