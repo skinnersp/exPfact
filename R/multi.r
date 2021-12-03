@@ -10,8 +10,9 @@ fit<-Mclust(data[,XXX:YYY],G=1:99,modelNames="VVV")
 write.table(file=paste(out,".mod",sep=''),fit$parameters$mean)
 write.table(file=paste(out,".pro",sep=''),fit$parameters$pro)
 dat<-numeric()
-for (i in 1:length(fit$parameters$pro))
-dat<-cbind(dat,sqrt(diag(fit$parameters$variance$sigma[,,i])))
+for (i in 1:length(fit$parameters$pro)) {
+    dat<-cbind(dat,sqrt(diag(fit$parameters$variance$sigma[,,i])))
+}
 write.table(file=paste(out,".var",sep=''),dat)
 write.table(file=paste(out,".bic",sep=''),fit$BIC)
 write.table(file=paste(out,".z",sep=''),  fit$z)

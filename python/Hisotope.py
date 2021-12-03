@@ -4,12 +4,14 @@ Created on Mon 13 Sep 2021
 @author: Michele Stofella
 """
 
-from pyopenms import *
+from pyopenms import AASequence, \
+                     CoarseIsotopePatternGenerator
+
 
 def fully_protonated_envelope(sequence, z):
     """
     Calculates the fully protonated envelope of a peptide with given
-    sequence and charge state. 
+    sequence and charge state.
 
     Parameters
     ----------
@@ -21,10 +23,10 @@ def fully_protonated_envelope(sequence, z):
     Returns
     -------
     isenv : dict
-        Dictionary encoding the m/z values of the isotopic envelope. 
-        The length of the dictionary is twice the length of the sequence. 
-    
-    The script also generates a 'sequence.txt' file containing the 
+        Dictionary encoding the m/z values of the isotopic envelope.
+        The length of the dictionary is twice the length of the sequence.
+
+    The script also generates a 'sequence.txt' file containing the
     predicted isotopic envelope in the format:
         isotope_index m/z intensity(sum=100) intensity(max=100)
     """
@@ -35,8 +37,8 @@ def fully_protonated_envelope(sequence, z):
     isotopes = seq_formula.getIsotopeDistribution(CoarseIsotopePatternGenerator(2*len(sequence)))
     for iso in isotopes.getContainer():
         isenv[(iso.getMZ()+z)/z] = iso.getIntensity()*100
-    
-    with open(sequence+'.txt','w+') as f:
+
+    with open(sequence+'.txt', 'w+') as f:
         f.write("# "+sequence+"\n")
         for i in range(len(isenv)):
             isotope = list(isenv.keys())[i]
@@ -44,13 +46,14 @@ def fully_protonated_envelope(sequence, z):
             intens2 = isenv[isotope]/max(list(isenv.values()))*100
             f.write("%d %5.5f %5.2f %5.2f\n" % (i, isotope, intens1, intens2))
     print("Fully protonated envelope saved in file "+sequence+".txt!")
-    
+
     return isenv
 
+
 if __name__ == '__main__':
-    
+
     import argparse
-    
+
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--seq")
@@ -60,8 +63,8 @@ if __name__ == '__main__':
 
     if opts.seq:
         sequence = opts.seq
-    
+
     if opts.z:
         z = int(opts.z)
-    
+
     fully_protonated_envelope(sequence, z)

@@ -2,8 +2,8 @@
 Copyright (C) 2019-2020 Simon P. Skinner
 
 This program is free software: you can redistribute it and/or modify
-it under the terms of version 2 of the GNU General Public License as published by
-the Free Software Foundation.
+it under the terms of version 2 of the GNU General Public License as published
+by the Free Software Foundation.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -15,6 +15,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 import numpy as np
+
 
 def write_pfact(params, fout_name):
     """
@@ -40,7 +41,7 @@ def write_dpred(output_file, dpred, times, eps=0, suffix=".Dpred"):
     """
     output_array = np.insert(dpred, [0], times, axis=0)
     if eps > 0:
-        for i in range(1,len(output_array)):
+        for i in range(1, len(output_array)):
             for j in range(len(output_array[i])):
                 output_array[i][j] += np.random.normal(scale=eps)
                 if output_array[i][j] > 1:
@@ -59,24 +60,26 @@ def write_diff(outfile, dpred, dexp):
     :return:
     """
     fout = open(outfile + '.diff', 'w')
-    costs = [1 / len(pred) * np.sum((pred - exp)**2) for pred, exp in zip(dpred, dexp)]
+    costs = [1/len(pred)*np.sum((pred-exp)**2) for pred, exp in zip(dpred, dexp)]
     for ii, cost in enumerate(costs):
         fout.write('{} {:e}\n'.format(ii + 1, cost))
     fout.close()
-    
+
+
 def write_combined_replicates(files, out):
-    """ 
+    """
     Writes out .Dpred file where deuteration is mean of multiple replicates
     :param files: list of .Dpred files to be combined
     :param out:   name of output .Dpred file
     :return:
     """
-    list_arrays = []; weights = []
+    list_arrays = []
+    weights = []
     for file in files:
         list_arrays.append(np.loadtxt(file))
         weights.append(np.loadtxt(file).T[1:])
     comb = np.mean(np.array(list_arrays), axis=0)
-    
+
     all_w = []
     for i in range(len(weights[0])):
         for j in range(len(weights[0][i])):
@@ -84,8 +87,6 @@ def write_combined_replicates(files, out):
     stds = [np.std(all_w[i]) for i in range(len(all_w))]
     pstd = np.sqrt(np.sum([std**2 for std in stds])/len(stds))
 
-    print("  Pooled std: "+str(round(pstd,5)))
+    print("  Pooled std: "+str(round(pstd, 5)))
 
     np.savetxt(out+'.Dpred', comb, fmt='%.7g')
-
-
