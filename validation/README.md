@@ -103,4 +103,34 @@ At least one cluster is compatible with protection factors from NMR (see file `n
 
 ## Isotopic envelopes
 
+Isotopic envelopes encode a greater amount of information with respect to centroided data. 
+This information can be used *a posteriori* to quantify the quality of a solution. 
+Given a set of protection factors belonging to a spectific cluster, the shape of the isotopic envelope can be predicted.
+A schematic representation showing how to predict the experimental isotopic envelope is provided below
+(see the paper for further information):
+
+![](images/Figure3.png)
+
+We included in this repository the experimental envelope for peptide 1 (residues 5-9) at time points stored in file `exp.times`:
+* `pep1.1.txt` contains the envelope for the control sample (fully protonated);
+* `pep1.2.txt` contains the envelope at time 1 minute;
+* `pep1.3.txt` contains the envelope at time 1 hour;
+* `pep1.4.txt` contains the envelope at time 24 hours;
+* `pep1.5.txt` contains the envelope for the fully deuterated sample;
+
+Select one solution `XXX.pfact` belonging to a specific cluster and run the following command:
+
+``` python ../python/isenv.py --mode p --ass moprp.ass --seq moprp.seq --pep 1 --z 1 --pfact XXX.pfact --T_label 298 --pH_label 4.4 --T_quench 273 --pH_quench 2.4 --times exp.times --prefix iso ```
+
+We show the results obtained by a random selection of solutions belonging to clusters 1, 4 and 7 identified for peptide 1.
+**Cluster 1, the only one in agreement with NMR data**, better reproduces the shape of the experimental envelope.
+
+![](images/Figure5.png)
+
 ## Comparison with NMR data
+
+The protection factors calculated by ExPfact correlate with measurements from NMR for the same protein under the same conditions:
+
+![](images/Figure4.png)
+
+Two outliers are identified at residues 91 and 94 (see the paper for further information).
