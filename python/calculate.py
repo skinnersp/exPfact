@@ -15,9 +15,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 import numpy as np
-
 from scipy import optimize
-
 from calc_dpred import calculate_dpred
 
 
@@ -57,7 +55,7 @@ def cost_function(params, *args):
 
 def do_random_search(kint, search_steps, pfactor_filter, dexp,
                      time_points, assignments, harmonic_term,
-                     prolines, weights):
+                     prolines, weights, seed):
     """
 
     :param kint: array of kint values.
@@ -70,20 +68,17 @@ def do_random_search(kint, search_steps, pfactor_filter, dexp,
     :return: dictionary containing all scores mapped to pfactor arrays.
     """
 
+    if seed == None and search_steps == 1:
+        np.random.seed(42)
+
     score_array = {}
     for i in range(search_steps):
-        if search_steps == 1:
-            np.random.seed(42)
-            init_array = [np.random.uniform(0.01, 20.00) if ii != 0
-                          and ii+1 not in prolines and ii+1 in pfactor_filter
-                          else -1 for ii in range(max(pfactor_filter))]
-        else:
-            init_array = [np.random.uniform(0.01, 20.00) if ii != 0
-                          and ii+1 not in prolines and ii+1 in pfactor_filter
-                          else -1 for ii in range(max(pfactor_filter))]
+        init_array = [np.random.uniform(0.01, 20.00) if ii != 0
+                      and ii+1 not in prolines and ii+1 in pfactor_filter
+                      else -1 for ii in range(max(pfactor_filter))]
 
         score = cost_function(init_array, dexp, time_points,
-                              assignments, harmonic_term, kint, weights)
+                          assignments, harmonic_term, kint, weights)
         score_array[score] = init_array
 
     return score_array
@@ -134,7 +129,7 @@ def harmonic_score(params, k):
     return sum(scores)
 
 
-def predict_dexp(pfact, time_points, assignments):
+def predict_dexp(pfact, time_points, kint, assignments):
     """
     Calculates predicted dexp from pfactors, time_points, assignments
     and kint values.
@@ -144,5 +139,5 @@ def predict_dexp(pfact, time_points, assignments):
     :param assignments: array of assignment arrays.
     :return: numpy array of dexp values.
     """
-    dexp = calculate_dpred(pfact, time_points, assignments)
+    dexp = calculate_dpred(pfact, time_points, kint, assignments)
     return dexp

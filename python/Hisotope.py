@@ -8,7 +8,7 @@ from pyopenms import AASequence, \
                      CoarseIsotopePatternGenerator
 
 
-def fully_protonated_envelope(sequence, z):
+def fully_protonated_envelope(sequence, z, write=True):
     """
     Calculates the fully protonated envelope of a peptide with given
     sequence and charge state.
@@ -38,14 +38,15 @@ def fully_protonated_envelope(sequence, z):
     for iso in isotopes.getContainer():
         isenv[(iso.getMZ()+z)/z] = iso.getIntensity()*100
 
-    with open(sequence+'.txt', 'w+') as f:
-        f.write("# "+sequence+"\n")
-        for i in range(len(isenv)):
-            isotope = list(isenv.keys())[i]
-            intens1 = isenv[isotope]
-            intens2 = isenv[isotope]/max(list(isenv.values()))*100
-            f.write("%d %5.5f %5.2f %5.2f\n" % (i, isotope, intens1, intens2))
-    print("Fully protonated envelope saved in file "+sequence+".txt!")
+    if write:
+        with open(sequence+'.txt', 'w+') as f:
+            f.write("# "+sequence+"\n")
+            for i in range(len(isenv)):
+                isotope = list(isenv.keys())[i]
+                intens1 = isenv[isotope]
+                intens2 = isenv[isotope]/max(list(isenv.values()))*100
+                f.write("%d %5.5f %5.2f %5.2f\n" % (i, isotope, intens1, intens2))
+        print("Fully protonated envelope saved in file "+sequence+".txt!")
 
     return isenv
 

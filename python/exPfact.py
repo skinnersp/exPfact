@@ -104,7 +104,8 @@ def run(base_dir, dexp, assignments, pfact, random_steps, time_points,
                                            assignments,
                                            harmonic_term,
                                            prolines,
-                                           weights
+                                           weights,
+                                           seed=None
                                            )
             min_score = min(rand_output.keys())
             init_array = rand_output[min_score]
