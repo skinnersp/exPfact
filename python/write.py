@@ -1,5 +1,5 @@
 """
-Copyright (C) 2019-2020 Simon P. Skinner
+Copyright (C) 2019-2020 Emanuele Paci, Simon P. Skinner, Michele Stofella
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of version 2 of the GNU General Public License as published

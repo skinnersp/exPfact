@@ -1,12 +1,17 @@
 """
-Created on Fri 10 Sep 2021
+Copyright (C) 2019-2020 Emanuele Paci, Simon P. Skinner, Michele Stofella
 
-@author: Michele Stofella
+This program is free software: you can redistribute it and/or modify
+it under the terms of version 2 of the GNU General Public License as published
+by the Free Software Foundation.
 
-Parameters for a deuterated protein in H2O.
-Parameters measured by Bai et al. (1993)
-Paramters for D and E are based on the work of More and al. (1997)
-and measured by and calculated in the functions acid and base
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 from math import exp, log10
@@ -40,9 +45,9 @@ lamb_Cterm_base = -1.80
 pKD = 14.17
 R = 1.987
 
-ka = 10**(1.4)/60
-kb = 10**(10.0)/60
-kw = 10**(-1.6)/60
+ka = 10**(1.4) / 60
+kb = 10**(10.0) / 60
+kw = 10**(-1.6) / 60
 
 Ea = 14000
 Eb = 17000
@@ -54,35 +59,35 @@ def get_D(pH):
 
 
 def get_OD(pH):
-    return 10**(pH-pKD)
+    return 10**(pH - pKD)
 
 
-def get_l_DTR(temperature):
-    return (1./temperature-1/293.)/R
+def get_temperature_normalization(temperature):
+    return (1 / temperature - 1/293) / R
 
 
 def get_pK_his(temperature):
     Ea_his = 7500
-    return -log10(10**(-7.00)*exp(-Ea_his*(1./temperature-1/278.)/R))
+    return -log10(10**(-7.00) * exp(-Ea_his * (1 / temperature - 1 / 278) / R))
 
 
 def get_pK_asp(temperature):
     Ea_asp = 960
-    return -log10(10**(-3.87)*exp(-Ea_asp*(1./temperature-1/278.)/R))
+    return -log10(10**(-3.87) * exp(-Ea_asp * (1 / temperature - 1 / 278) / R))
 
 
 def get_pK_glu(temperature):
     Ea_glu = 1083
-    return -log10(10**(-4.33)*exp(-Ea_glu*(1./temperature-1/278.)/R))
+    return -log10(10**(-4.33) * exp(-Ea_glu * (1 / temperature - 1 / 278) / R))
 
 
 def get_Fta(temperature):
-    return exp(-Ea*get_l_DTR(temperature))
+    return exp(-Ea * get_temperature_normalization(temperature))
 
 
 def get_Ftb(temperature):
-    return exp(-Eb*get_l_DTR(temperature))
+    return exp(-Eb * get_temperature_normalization(temperature))
 
 
 def get_Ftw(temperature):
-    return exp(-Ew*get_l_DTR(temperature))
+    return exp(-Ew * get_temperature_normalization(temperature))

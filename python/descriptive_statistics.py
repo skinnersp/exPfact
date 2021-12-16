@@ -1,7 +1,17 @@
 """
-Created on Wed Sep 15 2021
+Copyright (C) 2019-2020 Emanuele Paci, Simon P. Skinner, Michele Stofella
 
-@author: Michele Stofella
+This program is free software: you can redistribute it and/or modify
+it under the terms of version 2 of the GNU General Public License as published
+by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 import os
@@ -10,7 +20,7 @@ import pandas as pd
 from read import read_pfact
 
 
-def select_top_solutions(out_file, X):
+def select_top_solutions(out_file, n):
     files = os.listdir()
     diff_files = []
     diff_value = []
@@ -24,7 +34,7 @@ def select_top_solutions(out_file, X):
     np.savetxt('diff.list', sorted_files.values, fmt='%s %5.10f')
 
     p = []
-    for i in range(int(sorted_files.shape[0]*X/100)):
+    for i in range(int(sorted_files.shape[0]*n/100)):
         file = sorted_files[0][i]
         p.append(list(read_pfact(file.replace('.diff', '.pfact'))))
 
@@ -71,9 +81,9 @@ if __name__ == '__main__':
     if opts.res:
         out_file = opts.res
     if opts.top:
-        X = float(opts.top)
+        n = float(opts.top)
     else:
-        X = 50
+        n = 50
 
-    select_top_solutions(out_file, X)
+    select_top_solutions(out_file, n)
     run_descriptive()

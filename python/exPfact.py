@@ -1,5 +1,5 @@
 """
-Copyright (C) 2019-2020 Simon P. Skinner
+Copyright (C) 2019-2020 Emanuele Paci, Simon P. Skinner, Michele Stofella
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of version 2 of the GNU General Public License as published
@@ -111,7 +111,7 @@ def run(base_dir, dexp, assignments, pfact, random_steps, time_points,
             init_array = rand_output[min_score]
         else:
             init_array = [1 if ii not in prolines or ii == 0
-                          or ii+1 in pfactor_filter
+                          or ii + 1 in pfactor_filter
                           else -1 for ii in range(max(pfactor_filter))]
 
     else:
@@ -234,15 +234,15 @@ def main(argv):
             config['weights'] = None
 
         if opts.rep:
-            Nrep = int(opts.rep)
+            n_rep = int(opts.rep)
         else:
-            Nrep = 1
+            n_rep = 1
 
     assignments = read_assignments(config['assignments'])
 
-    for i in range(Nrep):
+    for i in range(n_rep):
 
-        if Nrep > 1:
+        if n_rep > 1:
             outfile = config['output']+str(i)
         else:
             outfile = config['output']

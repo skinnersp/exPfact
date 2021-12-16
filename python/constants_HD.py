@@ -1,5 +1,5 @@
 """
-Copyright (C) 2019-2020 Simon P. Skinner
+Copyright (C) 2019-2020 Emanuele Paci, Simon P. Skinner, Michele Stofella
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of version 2 of the GNU General Public License as published
@@ -49,9 +49,9 @@ lamb_Cterm_base = -1.80
 pKD = 15.05
 R = 1.987
 
-ka = 10**(1.62)/60
-kb = 10**(10.18)/60
-kw = 10**(-1.5)/60
+ka = 10**(1.62) / 60
+kb = 10**(10.18) / 60
+kw = 10**(-1.5) / 60
 
 Ea = 14000
 Eb = 17000
@@ -63,35 +63,35 @@ def get_D(pH):
 
 
 def get_OD(pH):
-    return 10**(pH-pKD)
+    return 10**(pH - pKD)
 
 
-def get_l_DTR(temperature):
-    return (1./temperature-1/293.)/R
+def get_temperature_normalization(temperature):
+    return (1 / temperature - 1 / 293) / R
 
 
 def get_pK_his(temperature):
     Ea_his = 7500
-    return -log10(10**(-7.42)*exp(-Ea_his*(1./temperature-1/278.)/R))
+    return -log10(10**(-7.42) * exp(-Ea_his * (1 / temperature - 1 / 278) / R))
 
 
 def get_pK_asp(temperature):
     Ea_asp = 1000
-    return -log10(10**(-4.48)*exp(-Ea_asp*(1./temperature-1/278.)/R))
+    return -log10(10**(-4.48) * exp(-Ea_asp * (1 / temperature - 1 / 278) / R))
 
 
 def get_pK_glu(temperature):
     Ea_glu = 1083
-    return -log10(10**(-4.93)*exp(-Ea_glu*(1./temperature-1/278.)/R))
+    return -log10(10**(-4.93) * exp(-Ea_glu * (1 / temperature - 1 / 278) / R))
 
 
 def get_Fta(temperature):
-    return exp(-Ea*get_l_DTR(temperature))
+    return exp(-Ea * get_temperature_normalization(temperature))
 
 
 def get_Ftb(temperature):
-    return exp(-Eb*get_l_DTR(temperature))
+    return exp(-Eb * get_temperature_normalization(temperature))
 
 
 def get_Ftw(temperature):
-    return exp(-Ew*get_l_DTR(temperature))
+    return exp(-Ew * get_temperature_normalization(temperature))

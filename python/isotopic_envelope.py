@@ -1,13 +1,27 @@
 """
+Copyright (C) 2019-2020 Emanuele Paci, Simon P. Skinner, Michele Stofella
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of version 2 of the GNU General Public License as published
+by the Free Software Foundation.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 ##############################################################################
 # Usage:
 #
 # * Predict mode (p)
-#   isenv.py -mode p --ass <ass_file> --seq <seq_file> --T_label <T_label>
+#   isotopic_envelope.py -mode p --ass <ass_file> --seq <seq_file> --T_label <T_label>
 #            --pH_label <pH_label> --pfact <pfact_file> --times <times_file>
 #            --pep <pep_index> --z <charge state> --prefix <out_prefix>
 # * Comparison mode (c)
-#   isenv.py -mode c --ass <ass_file> --seq <seq_file> --T_label <T_label>
+#   isotopic_envelope.py -mode c --ass <ass_file> --seq <seq_file> --T_label <T_label>
 #            --pH_label <pH_label> --T_quench <T_quench>
 #            --pH_quench <pH_quench> --pfact <pfact_file> --times <times_file>
 #            --pep <pep_index> --z <charge state>
@@ -22,7 +36,7 @@ import pandas as pd
 from read import read_time_points
 from isenv_functions import predict_isotopic_envelope, \
                             generate_back_exchange_time_points, \
-                            sticks_from_exp_envelope, \
+                            sticks_from_experimental_envelope, \
                             compare_predictions
 
 
@@ -53,7 +67,7 @@ def corrected_isotopic_envelope_prediction(ass_file, seq_file, T_label,
         exp_env = pd.read_csv(exp_env_pre+'.'+str(exp_idx)+'.txt',
                               header=None, delim_whitespace=True)
 
-        mass, fr = sticks_from_exp_envelope(exp_env, corr_env, z)
+        mass, fr = sticks_from_experimental_envelope(exp_env, corr_env, z)
 
         pref = exp_env_pre+'/'+str(pep)+'.'+str(exp_idx)+'.corr'+'*'
         res = compare_predictions(fr, prefix=pref)

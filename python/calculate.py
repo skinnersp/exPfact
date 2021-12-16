@@ -1,5 +1,5 @@
 """
-Copyright (C) 2019-2020 Simon P. Skinner
+Copyright (C) 2019-2020 Emanuele Paci, Simon P. Skinner, Michele Stofella
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of version 2 of the GNU General Public License as published
@@ -28,11 +28,11 @@ def calculate_rms(dpred, dexp, nj, weights=None):
     :return: rms (float)
     """
     if weights is not None:
-        rms = [weights[i]*(dpred[i]-dexp[i])**2 for i in range(len(dexp))]
-        return 1/nj*(np.sum(rms))
+        rms = [weights[i] * (dpred[i] - dexp[i])**2 for i in range(len(dexp))]
+        return 1 / nj * (np.sum(rms))
     else:
-        rms = [(dpred[i]-dexp[i])**2 for i in range(len(dexp))]
-        return 1/nj*(np.sum(rms))
+        rms = [(dpred[i] - dexp[i])**2 for i in range(len(dexp))]
+        return 1 / nj * (np.sum(rms))
 
 
 def cost_function(params, *args):
@@ -74,7 +74,7 @@ def do_random_search(kint, search_steps, pfactor_filter, dexp,
     score_array = {}
     for i in range(search_steps):
         init_array = [np.random.uniform(0.01, 20.00) if ii != 0
-                      and ii+1 not in prolines and ii+1 in pfactor_filter
+                      and ii + 1 not in prolines and ii + 1 in pfactor_filter
                       else -1 for ii in range(max(pfactor_filter))]
 
         score = cost_function(init_array, dexp, time_points,
@@ -123,9 +123,9 @@ def harmonic_score(params, k):
     :return: score (float)
     """
     scores = []
-    for ii in range(1, len(params)-1):
-        if params[ii-1] >= 0 and params[ii] >= 0 and params[ii + 1] >= 0:
-            scores.append(k*(params[ii-1]-2*params[ii]+params[ii+1])**2)
+    for ii in range(1, len(params) - 1):
+        if params[ii - 1] >= 0 and params[ii] >= 0 and params[ii + 1] >= 0:
+            scores.append(k * (params[ii - 1]- 2 * params[ii] + params[ii + 1])**2)
     return sum(scores)
 
 
