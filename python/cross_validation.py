@@ -22,6 +22,7 @@ from read import read_assignments, \
                  read_configuration
 from calc_dpred import calculate_dpred
 from kint import calculate_kint_for_sequence
+from logger import log
 import numpy as np
 import os
 import argparse
@@ -88,6 +89,7 @@ def cross_validate(dexp, time_points, ass, lambdas, pH, temp, seq, res1, resn):
     """
     fout = open('CVtest2.res', 'w+')
     for i in range(len(lambdas)):
+        log.info("Calculating at lambda=%5.10f" % round(lambdas[i]))
         CVtrain, CVtest = loo_crossval(dexp, time_points, ass, lambdas[i],
                                          pH, temp, seq, res1, resn)
         fout.write('{} {} {}\n'.format(lambdas[i], CVtrain, CVtest))
@@ -123,5 +125,6 @@ if __name__ == '__main__':
             res1 = 1
             resn = len(read_seq(opts.seq))
 
+    log.info("Running cross_validation.py")
     kint, prolines = calculate_kint_for_sequence(res1, resn, seq, temp, pH)
     cross_validate(dexp, time_points, ass, lambdas, pH, temp, seq, res1, resn)

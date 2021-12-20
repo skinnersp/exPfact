@@ -41,6 +41,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import os
 import sys
+import argparse
 
 from calc_dpred import calculate_dpred
 
@@ -60,6 +61,7 @@ from write import write_diff, \
     write_dpred, \
     write_pfact
 
+from logger import log
 
 def run(base_dir, dexp, assignments, pfact, random_steps, time_points,
         harmonic_term, output_file, tolerance, weights, pH, temperature,
@@ -143,8 +145,8 @@ def main(argv):
     :param argv: input arguments from command line.
     :return:
     """
+    log.info("Running exPfact.py")
 
-    import argparse
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--base")
@@ -241,7 +243,7 @@ def main(argv):
     assignments = read_assignments(config['assignments'])
 
     for i in range(n_rep):
-
+        log.info("Minimization %s of %s" % (str(i),str(n_rep)))
         if n_rep > 1:
             outfile = config['output']+str(i)
         else:
@@ -271,5 +273,6 @@ if __name__ == "__main__":
         sys.argv[1]
     except IndexError:
         print(__doc__)
+        log.error("Error while running ExPfact.py")
         exit()
     main(sys.argv[1:])

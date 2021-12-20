@@ -38,6 +38,7 @@ from isenv_functions import predict_isotopic_envelope, \
                             generate_back_exchange_time_points, \
                             sticks_from_experimental_envelope, \
                             compare_predictions
+from logger import log
 
 
 def corrected_isotopic_envelope_prediction(ass_file, seq_file, T_label,
@@ -126,10 +127,12 @@ if __name__ == '__main__':
                                   lnP_file, times_file, pep, z,
                                   exchange='f',
                                   out_file=exp_env_pre+'/'+str(pep))
+        log.info("Running isotopic_envelope in prediction (p) mode")
     elif opts.mode == 'c':
         corrected_isotopic_envelope_prediction(ass_file, seq_file, T_label,
                                                pH_label, T_quench, pH_quench,
                                                lnP_file, times_file,
                                                exp_env_pre, pep, z)
+        log.info("Running isotopic_envelope in comparison (c) mode")
     else:
         print(__doc__)

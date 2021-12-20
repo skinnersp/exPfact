@@ -16,6 +16,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from pyopenms import AASequence, \
                      CoarseIsotopePatternGenerator
+from logger import log
 
 
 def fully_protonated_envelope(sequence, z, write=True):
@@ -56,7 +57,7 @@ def fully_protonated_envelope(sequence, z, write=True):
                 intens1 = isotopic_envelope[isotope]
                 intens2 = isotopic_envelope[isotope]/max(list(isotopic_envelope.values()))*100
                 f.write("%d %5.5f %5.2f %5.2f\n" % (i, isotope, intens1, intens2))
-        print("Fully protonated envelope saved in file "+sequence+".txt!")
+        log.info("Fully protonated envelope saved in file %s.txt!" % sequence)
 
     return isotopic_envelope
 
@@ -78,4 +79,5 @@ if __name__ == '__main__':
     if opts.z:
         z = int(opts.z)
 
+    log.info("Running Hisotope.py")
     fully_protonated_envelope(sequence, z)

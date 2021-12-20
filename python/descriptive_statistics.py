@@ -18,6 +18,7 @@ import os
 import numpy as np
 import pandas as pd
 from read import read_pfact
+from logger import log
 
 
 def select_top_solutions(out_file, n):
@@ -32,6 +33,7 @@ def select_top_solutions(out_file, n):
             diff_value.append(np.average(diff[1]))
     sorted_files = pd.DataFrame(zip(diff_files, diff_value)).sort_values(1).reset_index(drop=True)
     np.savetxt('diff.list', sorted_files.values, fmt='%s %5.10f')
+    log.info("Cost function of all solutions stored in file diff.list")
 
     p = []
     for i in range(int(sorted_files.shape[0]*n/100)):
@@ -45,6 +47,7 @@ def select_top_solutions(out_file, n):
                     f.write("{: <12}\n".format(round(p[i][j], 5)))
                 else:
                     f.write("{: <12} ".format(round(p[i][j], 5)))
+    log.info("Top %s solutions stored in all.sp" % str(sorted_files.shape[0]*n/100))
 
 
 def run_descriptive():
@@ -55,17 +58,20 @@ def run_descriptive():
             round_mean = round(np.mean(allsp[i]), 5)
             round_std = round(np.std(allsp[i]), 5)
             f.write(str(i+1)+'\t'+str(round_mean)+'\t'+str(round_std)+'\n')
+    log.info("Average protection factors saved in average.pfact")
 
     with open('median.pfact', 'w+') as f:
         for i in range(allsp.shape[1]):
             round_median = round(np.median(allsp[i]), 5)
             f.write(str(i+1)+'\t'+str(round_median)+'\n')
+    log.info("Median protection factors saved in median.pfact")
 
     with open('minmax.pfact', 'w+') as f:
         for i in range(allsp.shape[1]):
             round_min = round(np.min(allsp[i]), 5)
             round_max = round(np.max(allsp[i]), 5)
             f.write(str(i+1)+'\t'+str(round_min)+'\t'+str(round_max)+'\n')
+    log.info("Minimum and maximum protection factors saved in minmax.pfact")
 
 
 if __name__ == '__main__':
@@ -85,5 +91,6 @@ if __name__ == '__main__':
     else:
         n = 50
 
+    log.info("Running descriptive_statistics.py")
     select_top_solutions(out_file, n)
     run_descriptive()

@@ -39,6 +39,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from calc_dpred import calculate_dpred
 import os
+import argparse
 
 from kint import calculate_kint_for_sequence
 
@@ -49,9 +50,11 @@ from read import read_assignments, \
 
 from write import write_dpred, write_combined_replicates
 
-import argparse
+from logger import log
+
 
 if __name__ == '__main__':
+    log.info("Running pfact2dpred")
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--base")
