@@ -1,9 +1,9 @@
 """
-Copyright (C) 2019-2020 Simon P. Skinner
+Copyright (C) 2019-2020 Emanuele Paci, Simon P. Skinner, Michele Stofella
 
 This program is free software: you can redistribute it and/or modify
-it under the terms of version 2 of the GNU General Public License as published by
-the Free Software Foundation.
+it under the terms of version 2 of the GNU General Public License as published
+by the Free Software Foundation.
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -13,30 +13,31 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
+
 from math import exp
 import numpy as np
 
-def get_rate_res(double [:] kint, double[:] P):
+def get_residue_rates(double [:] kint, double[:] P):
 
     cdef int N = kint.shape[0]
-    cdef kint_out = np.zeros(N)
+    cdef rates = np.zeros(N)
     cdef int i
 
     for i in range(N):
         if kint[i] == -1:
-            kint_out[i] += -1
+            rates[i] += -1
         else:
-            kint_out[i] += 60 * kint[i] / exp(P[i])
+            rates[i] += kint[i] / exp(P[i])
 
-    return kint_out
+    return rates
 
 
 
-def res2frag(double [:] rate_res, long [:, :] assignments, double [:] time_points):
+def peptide_uptake(double [:] rate_res, long [:, :] assignments, double [:] time_points):
 
     cdef int nfrag = assignments.shape[0]
     cdef int ntime = time_points.shape[0]
-    cdef double [:, :] rate_frag = np.zeros((nfrag,ntime))
+    cdef double [:, :] peptide_dpred = np.zeros((nfrag,ntime))
     cdef double [:] namide = np.zeros(nfrag)
     cdef int i
     cdef int j
@@ -50,10 +51,10 @@ def res2frag(double [:] rate_res, long [:, :] assignments, double [:] time_point
         for k in range(ntime):
             for j in range(assignments[i][1],assignments[i][2]):
                 if (rate_res[j]>=0):
-                    rate_frag[i][k]=rate_frag[i][k]+exp(-rate_res[j]*time_points[k])
-            rate_frag[i][k]=(namide[i]-rate_frag[i][k])/namide[i]
+                    peptide_dpred[i][k]=peptide_dpred[i][k]+exp(-rate_res[j]*time_points[k])
+            peptide_dpred[i][k]=(namide[i]-peptide_dpred[i][k])/namide[i]
 
-    return rate_frag
+    return peptide_dpred
 
 
 def calculate_dpred(double [:] P,
@@ -61,8 +62,8 @@ def calculate_dpred(double [:] P,
                     double [:] kint,
                     long [:, :] assignments):
 
-    rate_res = get_rate_res(kint, P)
+    rate_res = get_residue_rates(kint, P)
 
-    frag_rates = res2frag(rate_res, assignments, time_points)
+    peptide_dpred = peptide_uptake(rate_res, assignments, time_points)
 
-    return frag_rates
+    return peptide_dpred
