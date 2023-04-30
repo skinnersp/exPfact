@@ -4,6 +4,8 @@ ExPfact is a statistically robust approach to estimate protection factors at res
 
 If you use ExPfact in your work, please cite [Skinner et al., 'Estimating constraints for protection factors from HDX-MS data' (2019)](https://doi.org/10.1016/j.bpj.2019.02.024)
 
+ExPfact is licensed to academic users under the GNU GPL Version 2 licence. Commercial users should contact Dr Emmanuele Paci: e.paci@unibo.it.
+
 ## Install
 
 Install [Anaconda3](https://conda.io/projects/conda/en/latest/user-guide/install/linux.html).
